@@ -24,8 +24,11 @@
                 color: #000;
                 text-align: center;
             }
+            img {
+                margin-top: 60px;
+            }
             .title {
-                margin-top: 100px;
+                margin-top: 20px;
                 font-size: 36px;
                 margin-bottom: 20px;
                 font-weight: bold;
@@ -51,8 +54,8 @@
                 font-weight: bold;
                 color: #ffffff;
                 background-color: #6a11cb;
-                background-image: linear-gradient(to right, #6a11cb, #2575fc);
-                border: none;
+                background-color: #6a00ff;
+                border: 2px solid #000;
                 border-radius: 8px;
                 cursor: pointer;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -135,6 +138,7 @@
             >by @lukyn76</a
         >
 
+        <img src="logo.png" height="100px" alt="PUA Generator by @lukyn76" />
         <div class="title">Random PUA Character Generator</div>
         <div class="description">
             Click the button below to generate a random Private Use Area (PUA)
@@ -173,10 +177,10 @@
                     historyItem.classList.add("history-item");
                     const date = new Date(item.timestamp);
                     historyItem.innerHTML = `
-          <span>"${item.char}"</span>
-          <span>${item.hex}</span>
-          <div class="time">${date.toLocaleString()}</div>
-        `;
+              <span>"${item.char}"</span>
+              <span>${item.hex}</span>
+              <div class="time">${date.toLocaleString()}</div>
+            `;
                     historyList.appendChild(historyItem);
                 });
             }
