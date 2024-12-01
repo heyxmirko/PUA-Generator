@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PUA Generator</title>
+        <!-- Toastify CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+        />
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: linear-gradient(to bottom right, #4e54c8, #8f94fb);
+                color: #ffffff;
+                text-align: center;
+            }
+            .title {
+                margin-top: 100px;
+                font-size: 36px;
+                margin-bottom: 20px;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .description {
+                opacity: 0.7;
+                font-size: 18px;
+                margin-bottom: 40px;
+                font-weight: normal;
+                color: #f0f0f0;
+                max-width: 500px;
+            }
+            .hex-display {
+                margin-top: 100px;
+                font-size: 24px;
+                margin-bottom: 20px;
+                font-weight: bold;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            }
+            button {
+                padding: 15px 30px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #ffffff;
+                background-color: #6a11cb;
+                background-image: linear-gradient(to right, #6a11cb, #2575fc);
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                transition: transform 0.2s, box-shadow 0.2s;
+                margin-bottom: 20px;
+            }
+            button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            }
+            button:active {
+                transform: scale(0.95);
+            }
+            .github-btn {
+                padding: 10px 20px;
+                font-size: 18px;
+                background-color: #24292f;
+                color: white;
+                border-radius: 5px;
+                text-decoration: none;
+                display: inline-block;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+            .github-btn:hover {
+                background-color: #1f2328;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="title">Random PUA Character Generator</div>
+        <div class="description">
+            Click the button below to generate a random Private Use Area (PUA)
+            character, which will automatically be copied to your clipboard.
+        </div>
+
+        <div id="hexDisplay" class="hex-display">
+            Click the button to generate
+        </div>
+        <button id="generateButton">Generate & Copy</button>
+        <!-- Toastify JS -->
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            const generateButton = document.getElementById("generateButton");
+            const hexDisplay = document.getElementById("hexDisplay");
+
+            // Function to generate and copy a random PUA character
+            function generateAndCopyPUACharacter() {
+                const startCodePoint = 0xe000; // Start of PUA range
+                const endCodePoint = 0xf8ff; // End of PUA range
+                const randomCodePoint =
+                    Math.floor(
+                        Math.random() * (endCodePoint - startCodePoint + 1)
+                    ) + startCodePoint;
+                const char = String.fromCharCode(randomCodePoint);
+
+                // Display the code point in hexadecimal
+                const hexCode = `U+${randomCodePoint
+                    .toString(16)
+                    .toUpperCase()}`;
+                hexDisplay.textContent = `Generated Hex: ${hexCode}`;
+
+                // Copy character to clipboard
+                navigator.clipboard
+                    .writeText(char)
+                    .then(() => {
+                        // Show a toast notification
+                        Toastify({
+                            text: `Character "${char}" copied to clipboard!`,
+                            duration: 3000,
+                            gravity: "top", // Toast at the bottom
+                            position: "right", // Toast on the right
+                            backgroundColor:
+                                "linear-gradient(to right, #6a11cb, #2575fc)",
+                        }).showToast();
+                    })
+                    .catch((err) => {
+                        console.error("Failed to copy: ", err);
+                    });
+            }
+
+            // Event listener for the button
+            generateButton.addEventListener(
+                "click",
+                generateAndCopyPUACharacter
+            );
+        </script>
+    </body>
+</html>
