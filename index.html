@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="/images/favicon.png" />
         <title>PUA Generator</title>
         <!-- Toastify CSS -->
         <link
@@ -19,7 +20,7 @@
                 margin: 0;
                 font-family: Arial, sans-serif;
                 background: linear-gradient(to bottom right, #4e54c8, #8f94fb);
-                color: #ffffff;
+                color: #000;
                 text-align: center;
             }
             .title {
@@ -30,11 +31,10 @@
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             }
             .description {
-                opacity: 0.7;
+                opacity: 0.5;
                 font-size: 18px;
                 margin-bottom: 40px;
-                font-weight: normal;
-                color: #f0f0f0;
+                font-weight: bold;
                 max-width: 500px;
             }
             .hex-display {
@@ -57,6 +57,7 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
                 transition: transform 0.2s, box-shadow 0.2s;
                 margin-bottom: 20px;
+                border: 2px solid black;
             }
             button:hover {
                 transform: scale(1.05);
@@ -79,6 +80,13 @@
             .github-btn:hover {
                 background-color: #1f2328;
             }
+            .tag {
+                position: absolute;
+                bottom: 50px;
+                font-weight: 600;
+                text-decoration: none;
+                color: #00;
+            }
         </style>
     </head>
     <body>
@@ -88,10 +96,11 @@
             character, which will automatically be copied to your clipboard.
         </div>
 
-        <div id="hexDisplay" class="hex-display">
-            Click the button to generate
-        </div>
+        <div id="hexDisplay" class="hex-display"></div>
         <button id="generateButton">Generate & Copy</button>
+
+        <a href="https://github.com/heyxmirko" class="tag">by @lukyn76</a>
+
         <!-- Toastify JS -->
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
