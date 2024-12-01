@@ -30,7 +30,6 @@
         />
         <meta name="twitter:image" content="logo.png" />
 
-        <!-- General Meta Tags -->
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
@@ -43,7 +42,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/x-icon" href="favicon.png" />
         <title>PUA Generator by @lukyn76</title>
-        <!-- Toastify CSS -->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
@@ -177,7 +175,7 @@
             >by @lukyn76</a
         >
 
-        <img src="logo.png" height="100px" alt="PUA Generator by @lukyn76" />
+        <img src="logo.png" height="100%" alt="PUA Generator by @lukyn76" />
         <div class="title">Random PUA Character Generator</div>
         <div class="description">
             Click the button below to generate a random Private Use Area (PUA)
@@ -189,7 +187,6 @@
         <div id="hexDisplay" class="hex-display"></div>
         <button id="generateButton">Generate & Copy</button>
 
-        <!-- History Section -->
         <div class="history-section">
             <div class="clear-history">
                 <button id="clearHistoryButton">Clear History</button>
@@ -197,7 +194,6 @@
             <div class="history-list" id="historyList"></div>
         </div>
 
-        <!-- Toastify JS -->
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
             const generateButton = document.getElementById("generateButton");
@@ -206,7 +202,6 @@
             const clearHistoryButton =
                 document.getElementById("clearHistoryButton");
 
-            // Function to load history from local storage
             function loadHistory() {
                 const history =
                     JSON.parse(localStorage.getItem("puaHistory")) || [];
@@ -224,7 +219,6 @@
                 });
             }
 
-            // Function to generate and copy a random PUA character
             function generateAndCopyPUACharacter() {
                 const startCodePoint = 0xe000; // Start of PUA range
                 const endCodePoint = 0xf8ff; // End of PUA range
@@ -245,10 +239,8 @@
                 history.unshift({ char, hex: hexCode, timestamp }); // Add to the start of the list
                 localStorage.setItem("puaHistory", JSON.stringify(history));
 
-                // Update the history list UI
                 loadHistory();
 
-                // Copy character to clipboard
                 navigator.clipboard
                     .writeText(char)
                     .then(() => {
@@ -266,20 +258,30 @@
                     });
             }
 
-            // Event listener for the button
             generateButton.addEventListener(
                 "click",
                 generateAndCopyPUACharacter
             );
 
-            // Event listener for clearing history
             clearHistoryButton.addEventListener("click", () => {
                 localStorage.removeItem("puaHistory");
                 loadHistory();
             });
 
-            // Load the history on page load
             loadHistory();
+        </script>
+        <script src="https://tebex-lib.vercel.app/template.js"></script>
+        <script>
+            initTebexTemplate(
+                "PUA Generator",
+                "https://pua.vercel.app/",
+                "undefined",
+                "undefined",
+                "undefined",
+                "undefined",
+                "undefined",
+                "undefined"
+            );
         </script>
     </body>
 </html>
