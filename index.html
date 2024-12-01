@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/x-icon" href="favicon.ico" />
-        <title>PUA Generator</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png" />
+        <title>PUA Generator by @lukyn76</title>
         <!-- Toastify CSS -->
         <link
             rel="stylesheet"
@@ -16,7 +16,8 @@
                 flex-direction: column;
                 justify-content: start;
                 align-items: center;
-                height: 100vh;
+                min-height: 100vh;
+                height: 100%;
                 margin: 0;
                 font-family: Arial, sans-serif;
                 background: linear-gradient(to bottom right, #4e54c8, #8f94fb);
@@ -31,20 +32,20 @@
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             }
             .description {
-                opacity: 0.5;
+                opacity: 0.8;
                 font-size: 18px;
                 margin-bottom: 40px;
                 font-weight: bold;
                 max-width: 500px;
             }
             .hex-display {
-                margin-top: 100px;
+                margin-top: 40px;
                 font-size: 24px;
                 margin-bottom: 20px;
                 font-weight: bold;
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
             }
-            button {
+            #generateButton {
                 padding: 15px 30px;
                 font-size: 20px;
                 font-weight: bold;
@@ -57,55 +58,128 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
                 transition: transform 0.2s, box-shadow 0.2s;
                 margin-bottom: 20px;
-                border: 2px solid black;
             }
-            button:hover {
+            #generateButton:hover {
                 transform: scale(1.05);
                 box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
             }
-            button:active {
+            #generateButton:active {
                 transform: scale(0.95);
             }
             .github-btn {
                 padding: 10px 20px;
                 font-size: 18px;
-                background-color: #24292f;
-                color: white;
                 border-radius: 5px;
                 text-decoration: none;
                 display: inline-block;
                 font-weight: bold;
                 transition: background-color 0.3s ease;
             }
-            .github-btn:hover {
-                background-color: #1f2328;
+            .history-section {
+                margin-top: 40px;
+                width: 100%;
+                max-width: 500px;
+                padding: 10px;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                text-align: left;
+                color: #000;
+
+                margin-bottom: 100px;
+            }
+            .history-item {
+                margin-bottom: 15px;
+                font-size: 18px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .history-item span {
+                font-family: monospace;
+            }
+            .history-item .time {
+                font-size: 12px;
+            }
+            .clear-history {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 10px;
+            }
+            .clear-history button {
+                background-color: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                text-decoration: none;
+                padding: 5px 10px;
+            }
+            .clear-history button:hover {
+                color: #fff;
             }
             .tag {
                 position: absolute;
                 bottom: 50px;
                 font-weight: 600;
                 text-decoration: none;
-                color: #00;
+                color: #fff;
             }
         </style>
     </head>
     <body>
+        <a href="https://github.com/heyxmirko" class="github-btn"
+            >by @lukyn76</a
+        >
+
         <div class="title">Random PUA Character Generator</div>
         <div class="description">
             Click the button below to generate a random Private Use Area (PUA)
-            character, which will automatically be copied to your clipboard.
+            character, which will automatically be copied to your clipboard. The
+            generated characters will be saved in your history list and stored
+            in your browser's local storage until you clear the history.
         </div>
 
         <div id="hexDisplay" class="hex-display"></div>
         <button id="generateButton">Generate & Copy</button>
 
-        <a href="https://github.com/heyxmirko" class="tag">by @lukyn76</a>
+        <!-- History Section -->
+        <div class="history-section">
+            <div class="clear-history">
+                <button id="clearHistoryButton">Clear History</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
 
         <!-- Toastify JS -->
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
             const generateButton = document.getElementById("generateButton");
             const hexDisplay = document.getElementById("hexDisplay");
+            const historyList = document.getElementById("historyList");
+            const clearHistoryButton =
+                document.getElementById("clearHistoryButton");
+
+            // Function to load history from local storage
+            function loadHistory() {
+                const history =
+                    JSON.parse(localStorage.getItem("puaHistory")) || [];
+                historyList.innerHTML = "";
+                history.forEach((item) => {
+                    const historyItem = document.createElement("div");
+                    historyItem.classList.add("history-item");
+                    const date = new Date(item.timestamp);
+                    historyItem.innerHTML = `
+          <span>"${item.char}"</span>
+          <span>${item.hex}</span>
+          <div class="time">${date.toLocaleString()}</div>
+        `;
+                    historyList.appendChild(historyItem);
+                });
+            }
 
             // Function to generate and copy a random PUA character
             function generateAndCopyPUACharacter() {
@@ -116,23 +190,30 @@
                         Math.random() * (endCodePoint - startCodePoint + 1)
                     ) + startCodePoint;
                 const char = String.fromCharCode(randomCodePoint);
-
-                // Display the code point in hexadecimal
                 const hexCode = `U+${randomCodePoint
                     .toString(16)
                     .toUpperCase()}`;
                 hexDisplay.textContent = `Generated Hex: ${hexCode}`;
 
+                // Save the history to local storage
+                const history =
+                    JSON.parse(localStorage.getItem("puaHistory")) || [];
+                const timestamp = new Date().toISOString();
+                history.unshift({ char, hex: hexCode, timestamp }); // Add to the start of the list
+                localStorage.setItem("puaHistory", JSON.stringify(history));
+
+                // Update the history list UI
+                loadHistory();
+
                 // Copy character to clipboard
                 navigator.clipboard
                     .writeText(char)
                     .then(() => {
-                        // Show a toast notification
                         Toastify({
                             text: `Character "${char}" copied to clipboard!`,
                             duration: 3000,
-                            gravity: "top", // Toast at the bottom
-                            position: "right", // Toast on the right
+                            gravity: "top",
+                            position: "right",
                             backgroundColor:
                                 "linear-gradient(to right, #6a11cb, #2575fc)",
                         }).showToast();
@@ -147,6 +228,15 @@
                 "click",
                 generateAndCopyPUACharacter
             );
+
+            // Event listener for clearing history
+            clearHistoryButton.addEventListener("click", () => {
+                localStorage.removeItem("puaHistory");
+                loadHistory();
+            });
+
+            // Load the history on page load
+            loadHistory();
         </script>
     </body>
 </html>
